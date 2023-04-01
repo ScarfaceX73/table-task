@@ -44,6 +44,7 @@ function App() {
     return (
       <div>
         <div className='main'>
+          <button className='refresh-btn' onClick={() => refresh()}>refresh</button>
           <button className='switch-btn' onClick={() => setToggle(!toggle)}>Switch</button>
         </div>
         <Table toggle={toggle} users={users} refresh={refresh} />

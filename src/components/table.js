@@ -9,6 +9,7 @@ import ColumnFilter from './columnFilter';
 
 const Table = ({ toggle, users, refresh }) => {
     const [showGlobal, setShowGlobal] = useState(false);
+    const [showSort, setShowSort] = useState(false);
     const columnSix = useMemo(() => COLUMNSIX, []);
     const columnFour = useMemo(() => COLUMNFOUR, []);
     const data = useMemo(() => users, [users]);
@@ -46,14 +47,20 @@ const Table = ({ toggle, users, refresh }) => {
 
     const { globalFilter, pageIndex } = state
 
+    const handleGlobal = () => {
+        setShowGlobal(!showGlobal);
+    }
+
+    const handleSort = () => {
+        setShowSort(!showSort)
+    }
 
 
     if (!toggle) {
         return (
             <div>
-                <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
-                <button className='refresh-btn' onClick={() => refresh()}>refresh</button>
-                <button className='refresh-btn'>Enable GlobalFilter</button>
+                {showGlobal ? <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} /> : <></>}
+                <button className='refresh-btn' onClick={() => handleGlobal()}>{showGlobal ? "Disable Global Filter" : "Enable Global Filter"}</button>
                 <table {...getTableProps()}>
                     <thead>
                         {headerGroups.map((headerGroup) => (
@@ -100,7 +107,7 @@ const Table = ({ toggle, users, refresh }) => {
         return (
             <div>
                 <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
-                <button className='refresh-btn' onClick={() => refresh()}>refresh</button>
+                <button className='refresh-btn' onClick={() => handleSort()}>{showGlobal ? "Disable Sort Filter" : "Enable Sort Filter"}</button>
                 <table {...getTableProps()}>
                     <thead>
                         {headerGroups.map((headerGroup) => (
@@ -108,9 +115,9 @@ const Table = ({ toggle, users, refresh }) => {
                                 {headerGroup.headers.map((column) => (
                                     <th {...column.getHeaderProps()}>
                                         {column.render("Header")}
-                                        <span {...column.getHeaderProps(column.getSortByToggleProps())} style={{ marginLeft: "10px" }}>
+                                        {showSort ? <span {...column.getHeaderProps(column.getSortByToggleProps())} style={{ marginLeft: "10px" }}>
                                             {column.isSorted ? (column.isSortedDesc ? <BiSortDown /> : <BiSortUp />) : <BiSort />}
-                                        </span>
+                                        </span> : <></>}
                                         <div>{column.canFilter ? column.render('Filter') : null}</div>
                                     </th>
                                 ))}
