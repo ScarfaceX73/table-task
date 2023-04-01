@@ -9,6 +9,7 @@ import ColumnFilter from './columnFilter';
 
 const Table = ({ toggle, users, refresh }) => {
     const [showGlobal, setShowGlobal] = useState(false);
+    const [showPage, setShowPage] = useState(false);
     const [showSort, setShowSort] = useState(false);
     const columnSix = useMemo(() => COLUMNSIX, []);
     const columnFour = useMemo(() => COLUMNFOUR, []);
@@ -34,6 +35,7 @@ const Table = ({ toggle, users, refresh }) => {
         getTableProps,
         getTableBodyProps,
         headerGroups,
+        rows,
         page,
         nextPage,
         previousPage,
@@ -55,12 +57,56 @@ const Table = ({ toggle, users, refresh }) => {
         setShowSort(!showSort)
     }
 
+    const handlePage = () => {
+        setShowPage(!showPage)
+    }
+
+    const pagination = () => {
+        return (
+            page.map(row => {
+                prepareRow(row)
+                return (
+                    <tr {...row.getRowProps()}>
+                        {row.cells.map((cell) => {
+                            return (
+                                <td {...cell.getCellProps()}>
+                                    {cell.render('Cell')}
+                                </td>
+                            )
+                        })}
+
+                    </tr>
+                )
+            }))
+    }
+
+    const rowPage = () => {
+        return (
+            rows.map(row => {
+                prepareRow(row)
+                return (
+                    <tr {...row.getRowProps()}>
+                        {row.cells.map((cell) => {
+                            return (
+                                <td {...cell.getCellProps()}>
+                                    {cell.render('Cell')}
+                                </td>
+                            )
+                        })}
+
+                    </tr>
+                )
+            })
+        )
+    }
+
 
     if (!toggle) {
         return (
             <div>
                 {showGlobal ? <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} /> : <></>}
                 <button className='refresh-btn' onClick={() => handleGlobal()}>{showGlobal ? "Disable Global Filter" : "Enable Global Filter"}</button>
+                <button className='refresh-btn' onClick={() => handlePage()}>{showPage ? "Disable Pagination" : "Enable Pagination"}</button>
                 <table {...getTableProps()}>
                     <thead>
                         {headerGroups.map((headerGroup) => (
@@ -78,28 +124,14 @@ const Table = ({ toggle, users, refresh }) => {
                         ))}
                     </thead>
                     <tbody {...getTableBodyProps()}>
-                        {page.map(row => {
-                            prepareRow(row)
-                            return (
-                                <tr {...row.getRowProps()}>
-                                    {row.cells.map((cell) => {
-                                        return (
-                                            <td {...cell.getCellProps()}>
-                                                {cell.render('Cell')}
-                                            </td>
-                                        )
-                                    })}
-
-                                </tr>
-                            )
-                        })}
+                        {showPage ? pagination() : rowPage()}
                     </tbody>
                 </table>
-                <div className='pagination'>
+                {showPage ? <div className='pagination'>
                     <button onClick={() => previousPage()} disabled={!canPreviousPage}><BsChevronDoubleLeft /></button>
                     <span>{pageIndex + 1} of {pageOptions.length}</span>
                     <button onClick={() => nextPage()} disabled={!canNextPage}><BsChevronDoubleRight /></button>
-                </div>
+                </div> : <></>}
             </div>
         )
     }
