@@ -32,6 +32,7 @@ export const COLUMNFOUR = [
     {
         Header: "Id",
         accessor: "id",
+        disableFilters: true
     },
     {
         Header: "First Name",

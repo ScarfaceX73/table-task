@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { COLUMNSIX, COLUMNFOUR } from './columns';
 import { useSortBy, useTable, useGlobalFilter, useFilters, usePagination } from 'react-table';
 import "./style/table.css";
@@ -7,7 +7,8 @@ import { BiSortUp, BiSortDown, BiSort } from "react-icons/bi"
 import { BsChevronDoubleRight, BsChevronDoubleLeft } from "react-icons/bs"
 import ColumnFilter from './columnFilter';
 
-const Table = ({ toggle, users }) => {
+const Table = ({ toggle, users, refresh }) => {
+    const [showGlobal, setShowGlobal] = useState(false);
     const columnSix = useMemo(() => COLUMNSIX, []);
     const columnFour = useMemo(() => COLUMNFOUR, []);
     const data = useMemo(() => users, [users]);
@@ -45,10 +46,14 @@ const Table = ({ toggle, users }) => {
 
     const { globalFilter, pageIndex } = state
 
+
+
     if (!toggle) {
         return (
             <div>
                 <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+                <button className='refresh-btn' onClick={() => refresh()}>refresh</button>
+                <button className='refresh-btn'>Enable GlobalFilter</button>
                 <table {...getTableProps()}>
                     <thead>
                         {headerGroups.map((headerGroup) => (
@@ -95,12 +100,13 @@ const Table = ({ toggle, users }) => {
         return (
             <div>
                 <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+                <button className='refresh-btn' onClick={() => refresh()}>refresh</button>
                 <table {...getTableProps()}>
                     <thead>
                         {headerGroups.map((headerGroup) => (
                             <tr {...headerGroup.getHeaderGroupProps()}>
                                 {headerGroup.headers.map((column) => (
-                                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                                    <th {...column.getHeaderProps()}>
                                         {column.render("Header")}
                                         <span {...column.getHeaderProps(column.getSortByToggleProps())} style={{ marginLeft: "10px" }}>
                                             {column.isSorted ? (column.isSortedDesc ? <BiSortDown /> : <BiSortUp />) : <BiSort />}
@@ -129,6 +135,11 @@ const Table = ({ toggle, users }) => {
                         })}
                     </tbody>
                 </table>
+                <div className='pagination'>
+                    <button onClick={() => previousPage()} disabled={!canPreviousPage}><BsChevronDoubleLeft /></button>
+                    <span>{pageIndex + 1} of {pageOptions.length}</span>
+                    <button onClick={() => nextPage()} disabled={!canNextPage}><BsChevronDoubleRight /></button>
+                </div>
             </div>
         )
     }
