@@ -1,8 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
 import { useEffect, useState } from 'react';
-import Table from './table';
+import Table from './components/table';
 import axios from 'axios';
+import { FiSearch } from "react-icons/fi"
 
 function App() {
   const [toggle, setToggle] = useState(false);
@@ -17,6 +18,10 @@ function App() {
     })
     setUsers(res?.data);
     setLoading(false);
+  }
+
+  const refresh = () => {
+    fetchUsers()
   }
 
   useEffect(() => {
@@ -38,7 +43,10 @@ function App() {
   if (!loading) {
     return (
       <div>
-        <button className='switch-btn' onClick={() => setToggle(!toggle)}>Switch</button>
+        <div className='main'>
+          <button className='switch-btn' onClick={() => setToggle(!toggle)}>Switch</button>
+          <button className='refresh-btn' onClick={() => refresh()}>refresh</button>
+        </div>
         <Table toggle={toggle} users={users} />
       </div>
     );

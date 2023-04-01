@@ -12,16 +12,16 @@ export const COLUMNSIX = [
         accessor: "lastName"
     },
     {
-        Header: "Pet",
-        accessor: "pet"
-    },
-    {
         Header: "City",
         accessor: "city"
     },
     {
         Header: "Country",
         accessor: "country"
+    },
+    {
+        Header: "Pincode",
+        accessor: "pincode"
     },
 ]
 

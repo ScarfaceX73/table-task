@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import { COLUMNSIX, COLUMNFOUR } from './columns';
-import { useTable } from 'react-table';
-import "./table.css";
+import { useSortBy, useTable, useGlobalFilter } from 'react-table';
+import "./style/table.css";
+import GlobalFilter from './globalFilter';
 
 const Table = ({ toggle, users }) => {
     const columnSix = useMemo(() => COLUMNSIX, []);
@@ -11,7 +12,10 @@ const Table = ({ toggle, users }) => {
     const tableInstance = useTable({
         columns: toggle === false ? columnSix : columnFour,
         data: data
-    })
+    },
+        useGlobalFilter,
+        useSortBy,
+    )
 
     const {
         getTableProps,
@@ -19,17 +23,25 @@ const Table = ({ toggle, users }) => {
         headerGroups,
         rows,
         prepareRow,
+        state,
+        setGlobalFilter,
     } = tableInstance
+
+    const { globalFilter } = state
 
     if (!toggle) {
         return (
             <div>
+                <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
                 <table {...getTableProps()}>
                     <thead>
                         {headerGroups.map((headerGroup) => (
                             <tr {...headerGroup.getHeaderGroupProps()}>
                                 {headerGroup.headers.map((column) => (
-                                    <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+                                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                                        {column.render("Header")}
+                                        <span style={{ marginLeft: "10px" }}>{column.isSorted ? (column.isSortedDesc ? "🔼" : "🔽") : ""}</span>
+                                    </th>
                                 ))}
                             </tr>
                         ))}
@@ -58,12 +70,16 @@ const Table = ({ toggle, users }) => {
     if (toggle) {
         return (
             <div>
+                <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
                 <table {...getTableProps()}>
                     <thead>
                         {headerGroups.map((headerGroup) => (
                             <tr {...headerGroup.getHeaderGroupProps()}>
                                 {headerGroup.headers.map((column) => (
-                                    <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+                                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                                        {column.render("Header")}
+                                        <span style={{ marginLeft: "10px" }}>{column.isSorted ? (column.isSortedDesc ? "🔼" : "🔽") : ""}</span>
+                                    </th>
                                 ))}
                             </tr>
                         ))}

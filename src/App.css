@@ -37,25 +37,75 @@
   }
 }
 
-.switch-btn {
-  background-color: #4caf50; /* Green */
+.main {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.switch-btn,
+.refresh-btn {
+  height: 50px;
   border: none;
   color: white;
   padding: 10px 32px;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
   font-size: 16px;
   margin: 4px 2px;
   transition-duration: 0.4s;
   cursor: pointer;
   background-color: white;
-  color: black;
-  border: 2px solid #555555;
-  margin: 30px;
+  color: #585858;
+  border: 2px solid #6b6b6b;
+  margin: 30px 15px;
 }
 
 .switch-btn:hover {
-  background-color: #555555;
+  background-color: #0066ff;
   color: white;
+  border-color: #0066ff;
+}
+
+.refresh-btn:hover {
+  background-color: #4e4e4e;
+  color: white;
+  border-color: #4e4e4e;
+}
+
+input {
+  background: #ffffff;
+  box-shadow: 0px 16px 40px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  width: 661px;
+  height: 76px;
+  border: 0px;
+  outline: none;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 30px;
+  color: rgba(0, 0, 0, 0.548);
+  padding-left: 49px;
+}
+
+input::placeholder {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 30px;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.inp-div {
+  text-align: center;
+  margin: 30px;
+}
+
+.inp-btn {
+  background-color: inherit;
+  border: none;
+  color: rgba(0, 0, 0, 0.53);
+  font-size: 30px;
+  position: relative;
+  left: -60px;
+  top: 8px;
 }
