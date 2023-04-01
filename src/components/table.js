@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
 import { COLUMNSIX, COLUMNFOUR } from './columns';
-import { useSortBy, useTable, useGlobalFilter, useFilters } from 'react-table';
+import { useSortBy, useTable, useGlobalFilter, useFilters, usePagination } from 'react-table';
 import "./style/table.css";
 import GlobalFilter from './globalFilter';
 import { BiSortUp, BiSortDown, BiSort } from "react-icons/bi"
+import { BsChevronDoubleRight, BsChevronDoubleLeft } from "react-icons/bs"
 import ColumnFilter from './columnFilter';
 
 const Table = ({ toggle, users }) => {
@@ -24,19 +25,25 @@ const Table = ({ toggle, users }) => {
         useFilters,
         useGlobalFilter,
         useSortBy,
+        usePagination
     )
 
     const {
         getTableProps,
         getTableBodyProps,
         headerGroups,
-        rows,
+        page,
+        nextPage,
+        previousPage,
+        canNextPage,
+        canPreviousPage,
         prepareRow,
+        pageOptions,
         state,
         setGlobalFilter,
     } = tableInstance
 
-    const { globalFilter } = state
+    const { globalFilter, pageIndex } = state
 
     if (!toggle) {
         return (
@@ -59,7 +66,7 @@ const Table = ({ toggle, users }) => {
                         ))}
                     </thead>
                     <tbody {...getTableBodyProps()}>
-                        {rows.map(row => {
+                        {page.map(row => {
                             prepareRow(row)
                             return (
                                 <tr {...row.getRowProps()}>
@@ -76,6 +83,11 @@ const Table = ({ toggle, users }) => {
                         })}
                     </tbody>
                 </table>
+                <div className='pagination'>
+                    <button onClick={() => previousPage()} disabled={!canPreviousPage}><BsChevronDoubleLeft /></button>
+                    <span>{pageIndex + 1} of {pageOptions.length}</span>
+                    <button onClick={() => nextPage()} disabled={!canNextPage}><BsChevronDoubleRight /></button>
+                </div>
             </div>
         )
     }
@@ -100,7 +112,7 @@ const Table = ({ toggle, users }) => {
                         ))}
                     </thead>
                     <tbody {...getTableBodyProps()}>
-                        {rows.map(row => {
+                        {page.map(row => {
                             prepareRow(row)
                             return (
                                 <tr {...row.getRowProps()}>
