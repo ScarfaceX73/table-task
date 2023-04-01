@@ -1,45 +1,48 @@
+import ColumnFilter from "./columnFilter"
+
 export const COLUMNSIX = [
     {
         Header: "Id",
-        accessor: "id"
+        accessor: "id",
+        disableFilters: true
     },
     {
         Header: "First Name",
-        accessor: "firstName"
+        accessor: "firstName",
     },
     {
         Header: "Last Name",
-        accessor: "lastName"
+        accessor: "lastName",
     },
     {
         Header: "City",
-        accessor: "city"
+        accessor: "city",
     },
     {
         Header: "Country",
-        accessor: "country"
+        accessor: "country",
     },
     {
         Header: "Pincode",
-        accessor: "pincode"
+        accessor: "pincode",
     },
 ]
 
 export const COLUMNFOUR = [
     {
         Header: "Id",
-        accessor: "id"
+        accessor: "id",
     },
     {
         Header: "First Name",
-        accessor: "firstName"
+        accessor: "firstName",
     },
     {
         Header: "Age",
-        accessor: "age"
+        accessor: "age",
     },
     {
         Header: "Pet",
-        accessor: "pet"
+        accessor: "pet",
     },
 ]

@@ -1,9 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useAsyncDebounce } from 'react-table';
 
-const ColumnFilter = ({ filter, setFilter }) => {
+const ColumnFilter = ({ column }) => {
+    const { filterValue, setFilter } = column;
+    const [value, setValue] = useState(filterValue);
+    const handleChange = useAsyncDebounce((value) => {
+        setFilter(value || undefined)
+    }, 1000)
     return (
         <span>
-            <input type='text' placeholder='Search' value={filter || ""} onChange={(e) => setFilter(e.target.value)} />
+            <input className='col-search' type='text'
+                placeholder='Search' value={value || ""}
+                onChange={(e) => {
+                    setValue(e.target.value)
+                    handleChange(e.target.value)
+                }} />
         </span>
     )
 }

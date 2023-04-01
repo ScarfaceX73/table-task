@@ -8,6 +8,7 @@ table td,
 table th {
   border: 1px solid #ddd;
   padding: 8px;
+  text-align: center;
 }
 
 table tr {
@@ -25,8 +26,16 @@ table tr:hover {
 table th {
   padding-top: 12px;
   padding-bottom: 12px;
-  text-align: left;
   background-color: #0084ff;
   color: white;
   height: 36px;
+}
+
+.col-search {
+  outline: none;
+  border: 0px;
+  margin-top: 10px;
+  border-radius: 2px;
+  height: 20px;
+  padding-left: 10px;
 }

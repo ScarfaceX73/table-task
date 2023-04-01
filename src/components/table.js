@@ -1,18 +1,27 @@
 import React, { useMemo } from 'react';
 import { COLUMNSIX, COLUMNFOUR } from './columns';
-import { useSortBy, useTable, useGlobalFilter } from 'react-table';
+import { useSortBy, useTable, useGlobalFilter, useFilters } from 'react-table';
 import "./style/table.css";
 import GlobalFilter from './globalFilter';
+import { BiSortUp, BiSortDown, BiSort } from "react-icons/bi"
+import ColumnFilter from './columnFilter';
 
 const Table = ({ toggle, users }) => {
     const columnSix = useMemo(() => COLUMNSIX, []);
     const columnFour = useMemo(() => COLUMNFOUR, []);
     const data = useMemo(() => users, [users]);
+    const defaultColumn = useMemo(() => {
+        return {
+            Filter: ColumnFilter
+        }
+    }, []);
 
     const tableInstance = useTable({
         columns: toggle === false ? columnSix : columnFour,
-        data: data
+        data: data,
+        defaultColumn
     },
+        useFilters,
         useGlobalFilter,
         useSortBy,
     )
@@ -38,9 +47,12 @@ const Table = ({ toggle, users }) => {
                         {headerGroups.map((headerGroup) => (
                             <tr {...headerGroup.getHeaderGroupProps()}>
                                 {headerGroup.headers.map((column) => (
-                                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                                    <th {...column.getHeaderProps()}>
                                         {column.render("Header")}
-                                        <span style={{ marginLeft: "10px" }}>{column.isSorted ? (column.isSortedDesc ? "🔼" : "🔽") : ""}</span>
+                                        <span {...column.getHeaderProps(column.getSortByToggleProps())} style={{ marginLeft: "10px" }}>
+                                            {column.isSorted ? (column.isSortedDesc ? <BiSortDown /> : <BiSortUp />) : <BiSort />}
+                                        </span>
+                                        <div>{column.canFilter ? column.render('Filter') : null}</div>
                                     </th>
                                 ))}
                             </tr>
@@ -78,7 +90,10 @@ const Table = ({ toggle, users }) => {
                                 {headerGroup.headers.map((column) => (
                                     <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                                         {column.render("Header")}
-                                        <span style={{ marginLeft: "10px" }}>{column.isSorted ? (column.isSortedDesc ? "🔼" : "🔽") : ""}</span>
+                                        <span {...column.getHeaderProps(column.getSortByToggleProps())} style={{ marginLeft: "10px" }}>
+                                            {column.isSorted ? (column.isSortedDesc ? <BiSortDown /> : <BiSortUp />) : <BiSort />}
+                                        </span>
+                                        <div>{column.canFilter ? column.render('Filter') : null}</div>
                                     </th>
                                 ))}
                             </tr>

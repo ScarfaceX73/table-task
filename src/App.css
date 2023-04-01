@@ -73,7 +73,7 @@
   border-color: #4e4e4e;
 }
 
-input {
+.search-field {
   background: #ffffff;
   box-shadow: 0px 16px 40px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
@@ -88,7 +88,7 @@ input {
   padding-left: 49px;
 }
 
-input::placeholder {
+.search-field::placeholder {
   font-weight: 500;
   font-size: 20px;
   line-height: 30px;
